@@ -1,0 +1,13 @@
+services:
+  intro-to-react-app:
+    build: .
+    command: npm start 
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app/
+      - node_modules:/usr/src/app/node_modules 
+    container_name: react-app-part-1
+
+volumes:
+  node_modules:  
