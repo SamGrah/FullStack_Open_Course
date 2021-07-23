@@ -20,7 +20,7 @@ The method `ReactDOM.render()` takes a React component and DOM element as argume
 
 React components take the form:
 
-```React
+```jsx
 const <Component_name> = (props) => {
   // some JS code
   return (
@@ -34,7 +34,7 @@ The returned JSX must define a single tag at the top level. Any number of nested
 
 The following is an example of a component defintion:
 
-```react
+```jsx
 const Greet = () => {
   const greeting = 'Hello!'
   return (
@@ -55,7 +55,7 @@ In order to reference or execute JavaScript within JSX, the JavaScript content m
 
 Component can be referenced within the returned JSX of other components using similar syntax to that of a JSX tag of the form `<Container_name />`. For example, the above component `Greet` could be rendered within the below component `GreetTeam`:
 
-```react
+```jsx
 const GreetTeam = () => {
   return (
   	<>
@@ -83,7 +83,7 @@ The HTML rendered by the `ReactDOM.render()` method would then become:
 
 The `props` parameter defined for each component is an object where the properties of the object are defined on the JSX tags that represent a component 'invocation'. For example, in the following redefinition of the `Greet` component, the `name` property of the `props` parameter object is referenced within the JSX returned by the component. 
 
-```react
+```jsx
 const Greet = (props) => {
   return (
   	<p>Hello, {props.name}</p> 
@@ -93,7 +93,7 @@ const Greet = (props) => {
 
 The `Greet` component thus *expects* the passed object to define a value for the `props` (i.e. input) object. However, because the react component is 'invoked' using the JSX tag syntax, an object isn't defined as the argument within the tag. Rather, the 'property' names specifed in the JSX component tag reference are created as properties of the `props` object. For example, updating the `GreetTeam` component to 'invoke' the redefined `Greet` component by passing values to `props` takes the form...
 
-```react
+```jsx
 const GreetTeam = () => {
   return (
   	 <>
