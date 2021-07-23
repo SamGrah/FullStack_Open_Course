@@ -20,7 +20,7 @@ The method `ReactDOM.render()` takes a React component and DOM element as argume
 
 React components take the form:
 
-```react
+```React
 const <Component_name> = (props) => {
   // some JS code
   return (
