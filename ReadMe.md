@@ -1,4 +1,5 @@
 This repo contains all my answers for the FullStack Open Course @ https://fullstackopen.com/en/
+This ReadMe contains all my summary notes of the course lesson material.
 
 # Part 1
 
@@ -7,11 +8,11 @@ This repo contains all my answers for the FullStack Open Course @ https://fullst
 ---
 
 React projects can be created with the Node script call `npx create-react-app <app_name>`. Create react app will create a folder structure with the same name as the app. The folder structure will include all the necessary files for a React application and install all the dependencies automatically from npm. A git repo will also be created if the React app folder structure isn't already embedded within another git repo. 
-The default app created includes a development server which communicates via localhost:3000. 
+The default app created includes a development server which communicates via localhost:3000. The development server automatically hot reloads the app on any code change. If the app can't compile due to the code change, then the development server serves up a html page which contains the encoutered error including the code snippet on which the error was encountered.
 
 
 
-### Components
+### React Components
 
 ---
 
@@ -96,7 +97,7 @@ The `Greet` component thus *expects* the passed object to define a value for the
 ```jsx
 const GreetTeam = () => {
   return (
-  	 <>
+  	<>
     	<Greet name="Steve" />
     	<Greet name="Shirley"/>
     	<Greet name="Sam"/>
@@ -113,3 +114,89 @@ The HTML rendered by the `ReactDOM.render()` method would then become:
 <p>Hello, Sam</p>
 ```
 
+
+
+### Stateful Components
+
+---
+
+In order to automatically re-render the HTML of a component in response to events or new information, React utilizes a *state hook*. The state hook takes the form of a function `useState` that is imported from the `react-dom` module.
+
+```jsx
+import React, { useState } from 'react-dom'
+```
+
+The funciton `useState` is called within a component and defines two entities; a state variable, a function which sets the state variable value. In addition to setting the value of the defined state variable the setter function has a side effect that triggers a re-render of the component as well. Two birds, one stone. Array destructuring can be used to define the state variable and setter function pair. The initial value of the state variable is set to the value passed to the `useState` function in the assignment statement.
+As long as they are defined as pairs, any number of state variables and assoicated setter functions can be defined.
+
+```jsx
+const ComponentName = () => {
+  // define state variable and setter function
+  const [stateVariable1, stateSetter1] = useState('stateVariable1 initial value')
+  const [stateVariable2, stateSetter2] = useState('stateVariable2 initial value')
+  return (
+  // some JSX
+  )
+}
+```
+
+
+
+### State Changes
+
+---
+
+When a state variable *is re-assigned to a new value*, the components which reference that state variable are re-rendered. This does not include mutations. React doesn't consider a state variable to have changed state if the value referenced by the state variable is mutated. This isn't an issue for state variables which reference a primitive value in JavaScript but it could be an issue for objects. A component will not be re-rendered if the objected referenced by a state variable is mutated.
+The best practice for changing state of state variables which reference objects, is to copy the object and re-assign the value of the property in question. For example, suppose `stateVariable` is references `{ user: 'steve', age: '35' }`. React will recognize a state change relative to `stateVariable` if `setStateVariable({ ...stateVariable, user: 'Tim' })` is called.
+If an array is referenced by `stateVariable`, then a convienient approach for changing state of `stateVariable` would be to utilize the `concat` method which is an immutable method that returns a new array. Where `setStateVariable(stateVariable.concat('new element'))` would result in a re-render of any components which reference `stateVariable`.
+
+
+
+### Event Handlers in React
+
+---
+
+In React, generally, the `document.addEventListener` method is not invoked to register event listeners to a DOM element. Rather, the event is assigned to a component as a property specified on the JSX component tag. The same HTML property names for event handlers are used by JSX/React. The specified event property is assigned a callback function which executes in response to the event.
+
+```jsx
+const ComponentName = () => {
+  const [stateVariable, stateSetter] = useState(0)
+  
+  return (
+  	<button onClick={stateSetter(stateVariable + 1)}
+      increment state
+    </button>
+  )
+}
+```
+
+ 
+
+### Lifting State
+
+---
+
+If multiple components need to be re-rendered due to the same state change (single button click, etc), then the best practice is to create a 'parent component' in which the state variable is defined. Both 'child components' are re-rendered within the JSX of the 'parent component'. This practice is referred to this 
+
+```jsx
+const App = () => {
+  const [sharedState, stateSetter] = useState(0)
+  
+  return (
+  	<Component1 props_property={sharedState}/>
+    <Component2 props_property={sharedState}/>
+  )
+}
+```
+
+
+
+### Practices to Avoid in React
+
+The `useState` function, used by React to define state variables and their setters, is considered a hook. Hooks have rules of thumb to ensure that they're always called in the same order in order to prevent erratic behavior of the application. The `useState` function...
+
+- must not be called from within a loop
+- must not be called in a conditional expression
+- must not be called outside a function defining a component
+
+Additionally, components should not be defined within other components. The main reason for this is that when the outer component is re-rendered, the inner component is also re-rendered. React cannot optimize the inner or outer component and this can impact the app's performance.

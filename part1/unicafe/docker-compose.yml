@@ -1,13 +1,13 @@
 services:
-  part-1d:
+  unicafe:
     build: .
     command: npm start 
     ports:
-      - 3001:3000
+      - 3000:3000
     volumes:
       - .:/usr/src/app/
       # - node_modules:/usr/src/app/node_modules 
-    container_name: fullstack-course-part-1d
+    container_name: unicafe-container 
 
 # volumes:
 #   node_modules:  

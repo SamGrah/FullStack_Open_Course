@@ -1,5 +1,5 @@
 services:
-  part-1d:
+  part-1c:
     build: .
     command: npm start 
     ports:
@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/usr/src/app/
       # - node_modules:/usr/src/app/node_modules 
-    container_name: fullstack-course-part-1d
+    container_name: react-app-part-1c
 
 # volumes:
 #   node_modules:  
