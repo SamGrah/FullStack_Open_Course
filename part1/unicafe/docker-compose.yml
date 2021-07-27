@@ -7,9 +7,9 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - .:/app/
-      - /app/node_modules 
+      - ./src:/app/src
+      - ./public:/app/public 
     container_name: unicafe-container 
 
-volumes:
-  node_modules:  
+# volumes:
+#   node_modules:  
