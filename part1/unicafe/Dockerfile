@@ -1,9 +1,9 @@
 FROM node
 
-WORKDIR /usr/src/app
-
-COPY . .
+WORKDIR /app
 
 EXPOSE 3000
 
-RUN npm install
+COPY . ./
+
+RUN npm install 
