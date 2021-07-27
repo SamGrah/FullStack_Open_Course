@@ -6,10 +6,10 @@ services:
     command: npm start 
     ports:
       - 3000:3000
-    # volumes:
-      # - .:/app/
-      # - /app/node_modules 
+    volumes:
+      - .:/app/
+      - /app/node_modules 
     container_name: unicafe-container 
 
-# volumes:
-#   node_modules:  
+volumes:
+  node_modules:  
