@@ -1,0 +1,25 @@
+services:
+  react-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.react-app
+    # command: npm start 
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app/
+      - node_modules:/usr/src/app/node_modules 
+    container_name: thephonebook-frontend
+
+  json-server:
+    build:   
+      context: .
+      dockerfile: Dockerfile.json-server
+    ports:
+      - 3001:3001
+    volumes:
+      - ./db.json:/usr/src/app/db.json  
+    container_name: thephonebook-backend
+
+volumes:
+  node_modules:  

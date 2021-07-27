@@ -1,7 +1,7 @@
 This repo contains all my answers for the FullStack Open Course @ https://fullstackopen.com/en/
 This ReadMe contains all my summary notes of the course lesson material.
 
-# Part 1
+# Defining the Frontend with React
 
 ### Initializing a React Project
 
@@ -47,6 +47,8 @@ const Greet = () => {
 ```
 
 In order to reference or execute JavaScript within JSX, the JavaScript content must be surrounded by curly braces `{}`. Above, `greeting` is a JavaScript variable referenced by the returned JSX is surrounded by braces.
+
+Best practice is to declare components within their own files stored within `/src/components/` and import them into `App.js`. 
 
 
 
@@ -113,6 +115,31 @@ The HTML rendered by the `ReactDOM.render()` method would then become:
 <p>Hello, Shirley</p>
 <p>Hello, Sam</p>
 ```
+
+
+
+### Rendering Collections
+
+---
+
+Rendering of collections can be easily accomplish by invoking the `map` method within a JSX template such that JSX is returned for each element of the collection. 
+However, there is one caveat when to account for when dealing with JSX and React. When a tag is defined in JSX, the React app automatically assigns an identifer (key attribute) to the tag. React performs this assignment on the static JS file and then associates the assigned tag with the HTML. When the `map` method is defined in the static file, React cannot determine how many JSX tags will result from the execution of the `map` method. 
+In order to account for this lack of foresight on the part of React, the tag template defined are the return value of the `map` method a `key` attribute can be declared. The React app can then uniquely identify the JSX tag with an HTML element in the DOM. The value assigned to the `key` property must be unique.
+
+```jsx
+const GreeTeam = ({ teamArr }) => {
+  return (
+  	<>
+    	{	teamsArr.map(member => {
+       		return <li key={member.id}>Hello, {member.name}!</li>
+       	)}
+			 )}
+  	</>
+  )
+}
+```
+
+Note that it is a bad practice to use array indicies as keys. Because JavaScript arrays are mutable, the association between data and array position can be changed or deleted.
 
 
 
@@ -191,7 +218,52 @@ const App = () => {
 
 
 
+### Implementing Forms
+
+---
+
+Best practice for the implement HTML forms in React is to associate each field within the form with a state variable. Each time the `onChange` event fires, the associated state variable is reassigned to the new value of the field. When the form `onSumbit` event fires, the associated callback function can then access the current value of all the fields by referenced their respective state variable(s).
+
+```jsx
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote] = useState(
+    'a new note...'
+  ) 
+
+  const addNote = (event) => {
+    event.preventDefault()
+    // submit current value of <input> field
+    postRequestToServer(newNote)  
+    setNewNote('')
+  }
+  
+  // whenever change occurs to <input> field
+  //save field value to state variable
+  const handleInputChange = (event) => {
+    setNewNote(event.target.value)
+  }
+
+  return (
+    <div>
+      <h1>Create New Note</h1>
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleInputChange} />
+        <button type="submit">save</button>
+      </form>   
+    </div>
+  )
+}
+```
+
+ In the above `App` component, each time the input field of the form is modified, the value of the field is assigned to the `newNote` state variable. When the form submission event occurs, the current value of the field (i.e. `newNote`) is sent in a `POST` request to update the server data store.
+After the request is sent, the invocation of `setNewNote` results in 'clearing' of the input field text.
+
+
+
 ### Practices to Avoid in React
+
+---
 
 The `useState` function, used by React to define state variables and their setters, is considered a hook. Hooks have rules of thumb to ensure that they're always called in the same order in order to prevent erratic behavior of the application. The `useState` function...
 
@@ -200,3 +272,4 @@ The `useState` function, used by React to define state variables and their sette
 - must not be called outside a function defining a component
 
 Additionally, components should not be defined within other components. The main reason for this is that when the outer component is re-rendered, the inner component is also re-rendered. React cannot optimize the inner or outer component and this can impact the app's performance.
+
