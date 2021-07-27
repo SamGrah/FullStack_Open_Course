@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import FilterTextEntry from './components/FilterTextEntry'
+import DisplayCountriesData from './components/DisplayCountriesData'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+  const [ allCountries, setAllContries ] = useState([])
+  const [ filterText, setFilterText ] = useState('')
+  const [ selected, setSelected] = useState('')
+
+  const fetchAllCountries = () => {
+    (async () => {
+      let allCountries = await axios.get('https://restcountries.eu/rest/v2/all')
+      setAllContries(allCountries.data)
+    })()
+  }
+  useEffect(fetchAllCountries, [])
+
+  const visibleCountries = filterText ? 
+    allCountries.filter(cty => cty.name.toLowerCase().includes(filterText)) :
+    allCountries
+
+return ( 
+    <>
+      <FilterTextEntry setFilterText={setFilterText} setSelected={setSelected} />
+      <DisplayCountriesData list={visibleCountries} 
+                          selected={selected} 
+                          setSelected={setSelected} />                 
+
+    </>
+  ) 
 }
+
 
 export default App;
